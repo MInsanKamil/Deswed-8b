@@ -3,8 +3,29 @@ import { Link } from 'react-router-dom';
 import { BsStar } from 'react-icons/bs';
 import PropTypes from 'prop-types';
 import { StarRating } from '../common';
+import { useState } from 'react';
 
 const GameItem = ({ gameItem }) => {
+  const storedFavorite = JSON.parse(localStorage.getItem(`favorite_${gameItem.id}`));
+  const [isFavorite, setIsFavorite] = useState(storedFavorite || false);
+
+  const addToFavorites = () => {
+    const favorites = JSON.parse(localStorage.getItem('favorites')) || [];
+    const isCurrentlyFavorite = favorites.includes(gameItem.id);
+  
+    if (!isCurrentlyFavorite) {
+      favorites.push(gameItem.id);
+      localStorage.setItem('favorites', JSON.stringify(favorites));
+      localStorage.setItem(`favorite_${gameItem.id}`, true); // Simpan status favorit ke local storage
+      setIsFavorite(true);
+    } else {
+      const updatedFavorites = favorites.filter(id => id !== gameItem.id);
+      localStorage.setItem('favorites', JSON.stringify(updatedFavorites));
+      localStorage.removeItem(`favorite_${gameItem.id}`); // Hapus status favorit dari local storage
+      setIsFavorite(false);
+    }
+  };
+
   return (
     <GameItemWrapper className='card'>
       <div className='card-top img-fit-cover'>
@@ -28,8 +49,14 @@ const GameItem = ({ gameItem }) => {
               <p className='details-item-name fw-6'>Updated: &nbsp;</p>
               <p className='details-item-value'>{ gameItem?.updated } </p>
             </div>
+            <div className='details-item d-flex align-items-center'>
+              <button onClick={addToFavorites} className='card-button text-uppercase'>
+                {isFavorite ? 'Remove from Favorites' : 'Add to Favorites'}
+              </button>
+            </div>
           </div>
           <Link to = { `/games/${gameItem?.id }`} className='card-button text-uppercase'>see more</Link>
+          
         </div>
       </div>
     </GameItemWrapper>

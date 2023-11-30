@@ -14,7 +14,7 @@ const Navbar = () => {
       <div className='container w-100'>
         <div className='navbar-content'>
           <div className='brand-and-toggler d-flex align-items-center justify-content-between'>
-            <Link to = "/" className="navbar-brand text-white text-uppercase no-wrap">cool <span>games</span></Link>
+            <Link to = "/" className="navbar-brand text-white text-uppercase no-wrap">Games<span>NETT</span></Link>
             <button type='button' className='navbar-show-btn text-white' onClick={() => dispatch(setSidebarOn())}>
               <HiOutlineMenuAlt3 size = { 25 } />
             </button>
@@ -36,25 +36,11 @@ const Navbar = () => {
                 <Link to = "/stores" className='nav-link'>stores</Link>
               </li>
               <li className='nav-item'>
-                <Link to = "/games" className='nav-link'>games</Link>
+                <Link to = "/favorite" className='nav-link'>favorite</Link>
               </li>
             </ul>
           </div>
         </div>
-        <div className={`search-column ${sidebarStatus ? "show" : " "}`}>
-            <input type="text" placeholder="Search..." className="search-input" />
-          </div>
-
-          <div className={`navbar-collapse ${sidebarStatus ? "show" : " "}`}>
-            <button type="button" className='navbar-hide-btn' onClick={() => dispatch(setSidebarOff())}>
-              <MdClose size={25} />
-            </button>
-
-            <ul className='navbar-nav'>
-              {/* Daftar Menu Navbar */}
-              {/* ... */}
-            </ul>
-          </div>
       </div>
     </NavbarWrapper>
   )

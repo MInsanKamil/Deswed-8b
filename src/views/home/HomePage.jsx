@@ -4,21 +4,18 @@ import {
   Preloader,
   Tabs,
   Title,
+  Pagination
 } from "../../components/common/index";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectAllGames,
-  selectAllGamesStatus,
-} from "../../redux/store/gameSlice";
-import { useEffect } from "react";
+import { useEffect , useState} from "react";
 import { fetchAsyncGames } from "../../redux/utils/gameUtils";
 import { STATUS } from "../../utils/status";
-import { GameList } from "../../components/game/index";
+// eslint-disable-next-line no-unused-vars
 import { Link } from "react-router-dom";
 import { store_image } from "../../utils/images";
 import {
   selectAllGenres,
-  selectAllGenresStatus,
+  selectAllGenresStatus,selectGenresNextPage, selectGenresPrevPage
 } from "../../redux/store/genreSlice";
 import { fetchAsyncGenres } from "../../redux/utils/genreUtils";
 import {
@@ -27,69 +24,53 @@ import {
 } from "../../redux/store/storeSlice";
 import { StoreList } from "../../components/store/index";
 import { fetchAsyncStores } from "../../redux/utils/storeUtils";
+import GameAllPage from "../game/GameAllPage";
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const games = useSelector(selectAllGames);
-  const gamesStatus = useSelector(selectAllGamesStatus);
   const genres = useSelector(selectAllGenres);
   const genresStatus = useSelector(selectAllGenresStatus);
+  const nextPageGenres = useSelector(selectGenresNextPage);
+  const prevPageGenres = useSelector(selectGenresPrevPage);
   const stores = useSelector(selectAllStores);
   const storesStatus = useSelector(selectAllStoresStatus);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     dispatch(fetchAsyncGames());
-    dispatch(fetchAsyncGenres());
+    dispatch(fetchAsyncGenres(page));
     dispatch(fetchAsyncStores());
-  }, []);
+  }, [page]);
 
-  const renderedPopularGames = (
-    <>
-      <GameList sliceValue={9} games={games} />
-      <div className="d-flex justify-content-center">
-        <Link to="/games" className="section-btn">
-          see more games
-        </Link>
-      </div>
-    </>
-  );
+  const pageHandler = (pageValue) => setPage(pageValue);
 
   return (
     <HomeWrapper>
       <Banner />
 
       <section className="section sc-popular">
-        <div className="container">
-          <Title
-            titleName={{ firstText: "top popular", secondText: "games" }}
-          />
-          {gamesStatus === STATUS.LOADING ? (
-            <Preloader />
-          ) : games?.length > 0 ? (
-            renderedPopularGames
-          ) : (
-            "No games found!"
-          )}
-        </div>
+        <GameAllPage/>
       </section>
 
       <section className="section sc-genres">
         <div className="container">
           <Title
             titleName={{
-              firstText: "top",
-              secondText: "genres",
+              firstText: "genres",
             }}
           />
         </div>
         {genresStatus === STATUS.LOADING ? (
           <Preloader />
-        ) : genres?.length > 0 ? (
+        ) : genres?.length > 0 ? 
+          <>
           <Tabs sliceValue={9} data={genres} />
-        ) : (
+          <Pagination pageHandler = { pageHandler } nextPage = { nextPageGenres } prevPage = { prevPageGenres } currentPage = { page } />
+          </>: (
           "No genres found!"
         )}
       </section>
+      
 
       <section
         className="section sc-stores"

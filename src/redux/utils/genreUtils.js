@@ -7,3 +7,7 @@ export const fetchAsyncGenres = createAsyncThunk('genres/fetch', async(page = 1)
     const { data } = await axios.get(`${apiURL.genresURL}?${API_KEY}&page=${page}`);
     return data;
 })
+export const fetchAsyncGenresDetails = createAsyncThunk('genre/details/fetch', async(id) => {
+    const { data } = await axios.get(`${apiURL.genresURL}/${id}?${API_KEY}`);
+    return data;
+})
