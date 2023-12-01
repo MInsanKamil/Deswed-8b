@@ -1,12 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { STATUS } from "../../utils/status";
-import { fetchAsyncGameDetails, fetchAsyncGames } from "../utils/gameUtils";
+import { fetchAsyncGameDetails, fetchAsyncGames, fetchAsyncRecommendedGames, } from "../utils/gameUtils";
 
 const initialState = {
     games: [],
     gamesStatus: STATUS.IDLE,
     gamesSingle: {},
     gamesSingleStatus: STATUS.IDLE,
+    recommendedGames: [],
+    recommendedGamesStatus: STATUS.IDLE,
 }
 
 const gameSlice = createSlice({
@@ -38,6 +40,19 @@ const gameSlice = createSlice({
         builder.addCase(fetchAsyncGameDetails.rejected, (state) => {
             state.gamesSingleStatus = STATUS.FAILED
         })
+
+        builder.addCase(fetchAsyncRecommendedGames.pending, (state) => {
+            state.recommendedGamesStatus = STATUS.LOADING;
+        })
+    
+        builder.addCase(fetchAsyncRecommendedGames.fulfilled, (state, action) => {
+            state.recommendedGames = action.payload;
+            state.recommendedGamesStatus = STATUS.SUCCEEDED;
+        })
+    
+        builder.addCase(fetchAsyncRecommendedGames.rejected, (state) => {
+            state.recommendedGamesStatus = STATUS.FAILED;
+        })
     },
     reducers: {}
 });
@@ -48,5 +63,7 @@ export const selectGamesNextPage = (state) => state.game.games.next;
 export const selectGamesPrevPage = (state) => state.game.games.previous;
 export const selectSingleGame = (state) => state.game.gamesSingle;
 export const selectSingleGameStatus = (state) => state.game.gamesSingleStatus;
+export const selectRecommendedGames = (state) => state.game.recommendedGames;
+export const selectRecommendedGamesStatus = (state) => state.game.recommendedGamesStatus;
 
 export default gameSlice.reducer;
