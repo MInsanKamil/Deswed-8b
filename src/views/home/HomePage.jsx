@@ -51,25 +51,6 @@ const HomePage = () => {
       <section className="section sc-popular">
         <GameAllPage/>
       </section>
-
-      <section className="section sc-genres">
-        <div className="container">
-          <Title
-            titleName={{
-              firstText: "genres",
-            }}
-          />
-        </div>
-        {genresStatus === STATUS.LOADING ? (
-          <Preloader />
-        ) : genres?.length > 0 ? 
-          <>
-          <Tabs data={genres} />
-          <Pagination pageHandler = { pageHandler } nextPage = { nextPageGenres } prevPage = { prevPageGenres } currentPage = { page } />
-          </>: (
-          "No genres found!"
-        )}
-      </section>
       
 
       <section
