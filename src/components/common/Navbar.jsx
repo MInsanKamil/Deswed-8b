@@ -85,11 +85,11 @@ const NavbarWrapper = styled.div`
   background: #090624;
 
   button {
-    color: #E4D9C5;
+    color: white;
   }
 
   button:hover {
-    color: white; 
+    color: var(--clr-green-normal); 
   }
 
   .bar_s {
