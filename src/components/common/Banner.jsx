@@ -9,7 +9,7 @@ const Banner = () => {
     }}>
       <div className='banner-content w-100 container text-white'>
         <h1 className='banner-title text-uppercase'>best online game to play</h1>
-        <p className='lead-text'>Live gaming with lots of other games. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation.</p>
+        <p className='lead-text'>Discover new adventures and explore a curated collection of the latest and greatest games at our Game Stores. Start your exploration today and uncover an endless world of gaming possibilities!</p>
       </div>
     </BannerWrapper>
   )

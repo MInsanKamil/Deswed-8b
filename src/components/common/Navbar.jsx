@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { HiOutlineMenuAlt3 } from 'react-icons/hi';
@@ -5,9 +6,28 @@ import { MdClose } from 'react-icons/md';
 import { useDispatch, useSelector } from 'react-redux';
 import { selectSidebarStatus, setSidebarOff, setSidebarOn } from '../../redux/store/sidebarSlice';
 
+
 const Navbar = () => {
+  const [searchQuery, setSearchQuery] = useState('');
+  // eslint-disable-next-line no-unused-vars
+  const [searchResults, setSearchResults] = useState([]);
   const dispatch = useDispatch();
   const sidebarStatus = useSelector(selectSidebarStatus);
+
+  const handleSearch = async () => {
+    try {
+      const response = await fetch(`https://api.rawg.io/api/games?key=18d8dc115d954615a6fe8522598e8a97&search=${searchQuery}`);
+      const data = await response.json();
+      setSearchResults(data.results);
+      localStorage.setItem('searchResults', JSON.stringify(data.results));  // Menggunakan hasil pencarian dari API
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  };
+
+  const handleInputChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
 
   return (
     <NavbarWrapper className="d-flex align-items-center">
@@ -39,6 +59,18 @@ const Navbar = () => {
                 <Link to = "/favorite" className='nav-link'>favorite</Link>
               </li>
             </ul>
+
+            <div className='search-bar'>
+              <input className='bar_s'
+                type='text'
+                placeholder='Search games...'
+                value={searchQuery}
+                onChange={handleInputChange}
+              />
+              <Link to = "/search" className='nav-link'>
+                <button type='button' onClick={handleSearch}>Search</button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -51,6 +83,18 @@ export default Navbar;
 const NavbarWrapper = styled.div`
   min-height: 78px;
   background: #090624;
+
+  button {
+    color: #E4D9C5;
+  }
+
+  button:hover {
+    color: white; 
+  }
+
+  .bar_s {
+    border-radius: 5px; 
+  }
 
   .navbar-brand{
     font-weight: 700;

@@ -33,7 +33,7 @@ const GameAllPage = () => {
               <Title
                 titleName={{
                   firstText: 'Latest',
-                  secondText: 'Games',
+                  secondText: 'Update',
                 }}
               />
               <GameList games={recommendedGames} sliceValue={6}/>
