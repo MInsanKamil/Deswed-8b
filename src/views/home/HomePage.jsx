@@ -1,27 +1,15 @@
 import styled from "styled-components";
-import {
-  Banner,
-  Preloader,
-  Tabs,
-  Title,
-  Pagination
-} from "../../components/common/index";
+import { Banner, Preloader, Tabs, Title, Pagination } from "../../components/common/index";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect , useState} from "react";
+import { useEffect, useState } from "react";
 import { fetchAsyncGames } from "../../redux/utils/gameUtils";
 import { STATUS } from "../../utils/status";
 // eslint-disable-next-line no-unused-vars
 import { Link } from "react-router-dom";
 import { store_image } from "../../utils/images";
-import {
-  selectAllGenres,
-  selectAllGenresStatus,selectGenresNextPage, selectGenresPrevPage
-} from "../../redux/store/genreSlice";
+import { selectAllGenres, selectAllGenresStatus, selectGenresNextPage, selectGenresPrevPage } from "../../redux/store/genreSlice";
 import { fetchAsyncGenres } from "../../redux/utils/genreUtils";
-import {
-  selectAllStores,
-  selectAllStoresStatus,
-} from "../../redux/store/storeSlice";
+import { selectAllStores, selectAllStoresStatus } from "../../redux/store/storeSlice";
 import { StoreList } from "../../components/store/index";
 import { fetchAsyncStores } from "../../redux/utils/storeUtils";
 import GameAllPage from "../game/GameAllPage";
@@ -49,9 +37,28 @@ const HomePage = () => {
       <Banner />
 
       <section className="section sc-popular">
-        <GameAllPage/>
+        <GameAllPage />
       </section>
-      
+
+      <section className="section sc-genres">
+        <div className="container">
+          <Title
+            titleName={{
+              firstText: "genres",
+            }}
+          />
+        </div>
+        {genresStatus === STATUS.LOADING ? (
+          <Preloader />
+        ) : genres?.length > 0 ? (
+          <>
+            <Tabs data={genres} />
+            <Pagination pageHandler={pageHandler} nextPage={nextPageGenres} prevPage={prevPageGenres} currentPage={page} />
+          </>
+        ) : (
+          "No genres found!"
+        )}
+      </section>
 
       <section
         className="section sc-stores"
@@ -66,13 +73,7 @@ const HomePage = () => {
               secondText: "game stores",
             }}
           />
-          {storesStatus === STATUS.LOADING ? (
-            <Preloader />
-          ) : stores?.length > 0 ? (
-            <StoreList stores={stores} />
-          ) : (
-            "No stores found!"
-          )}
+          {storesStatus === STATUS.LOADING ? <Preloader /> : stores?.length > 0 ? <StoreList stores={stores} /> : "No stores found!"}
         </div>
       </section>
     </HomeWrapper>
