@@ -64,7 +64,7 @@ const HomePage = () => {
           <Preloader />
         ) : genres?.length > 0 ? 
           <>
-          <Tabs sliceValue={9} data={genres} />
+          <Tabs data={genres} />
           <Pagination pageHandler = { pageHandler } nextPage = { nextPageGenres } prevPage = { prevPageGenres } currentPage = { page } />
           </>: (
           "No genres found!"
